@@ -8,7 +8,9 @@
       "Bash(vercel login:*)",
       "Bash(vercel:*)",
       "Bash(npm run build:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(gh auth:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": []
   }
