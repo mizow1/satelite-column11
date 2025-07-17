@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/daily-proposals",
+      "schedule": "0 9 * * *"
+    }
+  ],
+  "functions": {
+    "app/api/articles/bulk-generate/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/daily-proposals/route.ts": {
+      "maxDuration": 300
+    }
+  }
+}

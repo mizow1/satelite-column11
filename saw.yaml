@@ -1,0 +1,205 @@
+apiVersion: v1
+kind: Saw
+metadata:
+  name: satelite-column10
+  description: SEO記事作成・管理サービス
+spec:
+  # アプリケーション設定
+  application:
+    name: satelite-column10
+    version: "1.0.0"
+    runtime: php
+    framework: vanilla
+    
+  # 環境設定
+  environment:
+    production:
+      # データベース設定
+      database:
+        host: ${DB_HOST}
+        name: ${DB_NAME}
+        user: ${DB_USER}
+        password: ${DB_PASS}
+        engine: mysql
+        
+      # AI API設定
+      apis:
+        openai:
+          key: ${OPENAI_API_KEY}
+          model: ${OPENAI_MODEL}
+        claude:
+          key: ${CLAUDE_API_KEY}
+          model: ${CLAUDE_MODEL}
+        gemini:
+          key: ${GEMINI_API_KEY}
+          model: ${GEMINI_MODEL}
+          
+      # サーバー設定
+      server:
+        provider: xserver
+        php_version: "8.1"
+        max_execution_time: 300
+        memory_limit: "512M"
+        
+  # 機能モジュール
+  modules:
+    - name: site-management
+      description: サイト管理機能
+      endpoints:
+        - /sites
+        - /sites/{id}
+        - /sites/{id}/urls
+        
+    - name: article-planning
+      description: 記事方針作成機能
+      endpoints:
+        - /sites/{id}/planning
+        - /sites/{id}/planning/generate
+        
+    - name: article-outline
+      description: 記事概要作成機能
+      endpoints:
+        - /sites/{id}/outlines
+        - /sites/{id}/outlines/generate
+        - /sites/{id}/outlines/auto-generate
+        
+    - name: article-generation
+      description: 記事本文生成機能
+      endpoints:
+        - /articles
+        - /articles/generate
+        - /articles/bulk-generate
+        - /articles/auto-generate
+        
+    - name: multilingual
+      description: 多言語対応機能
+      languages:
+        - ja: 日
+        - en: 英
+        - zh-cn: 簡
+        - zh-tw: 繁
+        - ko: 韓
+        - es: 西
+        - ar: 阿
+        - pt: 葡
+        - fr: 仏
+        - de: 独
+        - ru: 露
+        - it: 伊
+        - hi: 印
+        
+    - name: export
+      description: CSV出力機能
+      formats:
+        - csv
+        
+    - name: user-management
+      description: ユーザー管理機能
+      authentication:
+        method: email_password
+        
+    - name: usage-tracking
+      description: トークン使用量管理機能
+      metrics:
+        - total_tokens
+        - monthly_tokens
+        - rate_limits
+        
+  # データベーススキーマ
+  database:
+    tables:
+      - name: users
+        columns:
+          - id: primary_key
+          - email: string
+          - password: string
+          - created_at: timestamp
+          
+      - name: sites
+        columns:
+          - id: primary_key
+          - user_id: foreign_key
+          - name: string
+          - url: string
+          - description: text
+          - created_at: timestamp
+          
+      - name: site_urls
+        columns:
+          - id: primary_key
+          - site_id: foreign_key
+          - url: string
+          - is_active: boolean
+          
+      - name: article_plans
+        columns:
+          - id: primary_key
+          - site_id: foreign_key
+          - content: text
+          - created_at: timestamp
+          
+      - name: article_outlines
+        columns:
+          - id: primary_key
+          - site_id: foreign_key
+          - title: string
+          - outline: text
+          - seo_keywords: text
+          - user_rating: integer
+          - created_at: timestamp
+          
+      - name: articles
+        columns:
+          - id: primary_key
+          - outline_id: foreign_key
+          - language: string
+          - content: longtext
+          - user_rating: integer
+          - user_instruction: text
+          - created_at: timestamp
+          
+      - name: token_usage
+        columns:
+          - id: primary_key
+          - user_id: foreign_key
+          - ai_provider: string
+          - tokens_used: integer
+          - month_year: string
+          - created_at: timestamp
+          
+  # デプロイメント設定
+  deployment:
+    target: xserver
+    build:
+      steps:
+        - name: Install dependencies
+          command: composer install
+        - name: Build assets
+          command: npm run build
+        - name: Database migration
+          command: php migrate.php
+          
+    healthcheck:
+      path: /health
+      interval: 30s
+      timeout: 10s
+      
+  # セキュリティ設定
+  security:
+    api_keys:
+      encryption: true
+      rotation: monthly
+    database:
+      ssl: true
+      backup: daily
+      
+  # モニタリング
+  monitoring:
+    logs:
+      level: info
+      retention: 30d
+    metrics:
+      - response_time
+      - error_rate
+      - token_usage
+      - user_activity

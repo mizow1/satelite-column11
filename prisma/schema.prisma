@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String         @id @default(cuid())
+  email             String         @unique
+  password          String?
+  name              String?
+  image             String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  sites             Site[]
+  tokenUsage        TokenUsage[]
+  settings          UserSettings?
+}
+
+model UserSettings {
+  id                String         @id @default(cuid())
+  userId            String         @unique
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aiService         String         @default("gpt-4")
+  tokenLimitMonthly Int            @default(100000)
+  emailNotifications Boolean       @default(true)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+}
+
+model Site {
+  id                String         @id @default(cuid())
+  userId            String
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name              String
+  url               String?
+  siteImage         String?        @db.Text
+  contentPolicy     String?        @db.Text
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  siteUrls          SiteUrl[]
+  articleOutlines   ArticleOutline[]
+}
+
+model SiteUrl {
+  id                String         @id @default(cuid())
+  siteId            String
+  site              Site           @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  url               String
+  isActive          Boolean        @default(true)
+  createdAt         DateTime       @default(now())
+}
+
+model ArticleOutline {
+  id                String         @id @default(cuid())
+  siteId            String
+  site              Site           @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  title             String
+  outline           String         @db.Text
+  seoKeywords       String?        @db.Text
+  userRating        Int?
+  createdAt         DateTime       @default(now())
+  articles          Article[]
+}
+
+model Article {
+  id                String         @id @default(cuid())
+  outlineId         String
+  outline           ArticleOutline @relation(fields: [outlineId], references: [id], onDelete: Cascade)
+  language          String
+  content           String         @db.Text
+  userInstructions  String?        @db.Text
+  userRating        Int?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+}
+
+model TokenUsage {
+  id                String         @id @default(cuid())
+  userId            String
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aiService         String
+  tokensUsed        Int
+  usageDate         DateTime       @default(now())
+  createdAt         DateTime       @default(now())
+}
