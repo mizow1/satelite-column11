@@ -13,9 +13,6 @@
     "app/api/cron/daily-proposals/route.ts": {
       "maxDuration": 300,
       "runtime": "nodejs20.x"
-    },
-    "app/api/*/route.ts": {
-      "runtime": "nodejs20.x"
     }
   }
 }
