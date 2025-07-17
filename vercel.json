@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "crons": [
     {
       "path": "/api/cron/daily-proposals",
@@ -7,12 +8,10 @@
   ],
   "functions": {
     "app/api/articles/bulk-generate/route.ts": {
-      "maxDuration": 300,
-      "runtime": "nodejs20.x"
+      "maxDuration": 300
     },
     "app/api/cron/daily-proposals/route.ts": {
-      "maxDuration": 300,
-      "runtime": "nodejs20.x"
+      "maxDuration": 300
     }
   }
 }

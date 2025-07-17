@@ -56,3 +56,35 @@ export function getUsageColor(percentage: number): string {
 export function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
+
+export function getLanguageIcon(language: string): string {
+  const icons: { [key: string]: string } = {
+    'ja': '🇯🇵',
+    'en': '🇺🇸',
+    'zh': '🇨🇳',
+    'ko': '🇰🇷',
+    'es': '🇪🇸',
+    'fr': '🇫🇷',
+    'de': '🇩🇪',
+    'it': '🇮🇹',
+    'pt': '🇵🇹',
+    'ru': '🇷🇺'
+  }
+  return icons[language] || '🌐'
+}
+
+export function getLanguageName(language: string): string {
+  const names: { [key: string]: string } = {
+    'ja': '日本語',
+    'en': 'English',
+    'zh': '中文',
+    'ko': '한국어',
+    'es': 'Español',
+    'fr': 'Français',
+    'de': 'Deutsch',
+    'it': 'Italiano',
+    'pt': 'Português',
+    'ru': 'Русский'
+  }
+  return names[language] || language
+}

@@ -61,8 +61,8 @@ export async function POST(
     // サイト情報を準備
     const siteInfo = {
       name: site.name,
-      url: site.url,
-      siteImage: site.siteImage,
+      url: site.url || undefined,
+      siteImage: site.siteImage || undefined,
       urls: site.siteUrls.map(siteUrl => siteUrl.url)
     }
 
