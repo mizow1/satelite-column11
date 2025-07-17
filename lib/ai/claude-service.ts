@@ -28,7 +28,7 @@ ${siteInfo.urls?.length ? `関連URL: ${siteInfo.urls.join(', ')}` : ''}
 5. 重視すべきSEO要素
 `
 
-    const response = await this.client.messages.create({
+    const response = await (this.client as any).messages.create({
       model: 'claude-3-sonnet-20240229',
       max_tokens: 1500,
       messages: [
@@ -70,7 +70,7 @@ SEOキーワード: [キーワード1, キーワード2, キーワード3]
 ${count}個の記事概要を作成してください。
 `
 
-    const response = await this.client.messages.create({
+    const response = await (this.client as any).messages.create({
       model: 'claude-3-sonnet-20240229',
       max_tokens: 2000,
       messages: [
@@ -132,7 +132,7 @@ ${userInstructions}
 記事本文のみを出力してください：
 `
 
-    const response = await this.client.messages.create({
+    const response = await (this.client as any).messages.create({
       model: 'claude-3-sonnet-20240229',
       max_tokens: 4000,
       messages: [
