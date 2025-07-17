@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useQuery, useMutation } from 'react-query'
 import { useSearchParams } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
@@ -11,7 +11,7 @@ import { formatDate, getLanguageIcon, getLanguageName, truncateText } from '@/li
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import Link from 'next/link'
 
-export default function ArticlesPage() {
+export default function ArticlesPage(): React.ReactElement {
   const searchParams = useSearchParams()
   const siteId = searchParams.get('siteId')
   const [selectedArticles, setSelectedArticles] = useState<string[]>([])
@@ -19,7 +19,7 @@ export default function ArticlesPage() {
   const [selectedLanguage, setSelectedLanguage] = useState('')
   const [isExporting, setIsExporting] = useState(false)
 
-  const { data: articles, isLoading } = useQuery(
+  const { data: articles, isLoading } = useQuery<any[]>(
     ['articles', siteId],
     async () => {
       const url = siteId ? `/api/articles?siteId=${siteId}` : '/api/articles'
@@ -29,7 +29,7 @@ export default function ArticlesPage() {
     }
   )
 
-  const { data: sites } = useQuery(
+  const { data: sites } = useQuery<any[]>(
     'sites',
     async () => {
       const response = await fetch('/api/sites')
@@ -77,7 +77,7 @@ export default function ArticlesPage() {
   )
 
   // フィルタリング
-  const filteredArticles = articles?.filter((article: any) => {
+  const filteredArticles: any[] = articles?.filter((article: any) => {
     const matchesSearch = searchTerm === '' || 
       article.outline.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       article.outline.site.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -146,7 +146,6 @@ export default function ArticlesPage() {
           </div>
         </div>
 
-        {/* フィルターと検索 */}
         <Card>
           <CardHeader>
             <CardTitle>フィルター・検索</CardTitle>
@@ -205,8 +204,7 @@ export default function ArticlesPage() {
           </CardContent>
         </Card>
 
-        {/* 記事一覧 */}
-        {filteredArticles.length > 0 ? (
+        {(filteredArticles && filteredArticles.length > 0) ? (
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <p className="text-sm text-gray-600">

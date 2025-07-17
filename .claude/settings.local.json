@@ -7,7 +7,8 @@
       "Bash(npm install)",
       "Bash(vercel login:*)",
       "Bash(vercel:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": []
   }
