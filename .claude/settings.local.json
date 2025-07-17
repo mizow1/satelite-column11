@@ -10,7 +10,10 @@
       "Bash(npm run build:*)",
       "Bash(npx tsc:*)",
       "Bash(gh auth:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:satelite-column11.vercel.app)",
+      "WebFetch(domain:satelite-column11-kiro.vercel.app)",
+      "Bash(where vercel)"
     ],
     "deny": []
   }
