@@ -13,6 +13,9 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "dependencies": {
     "next": "14.0.4",
     "react": "^18",
@@ -53,7 +56,8 @@
     "react-hook-form": "^7.47.0",
     "@hookform/resolvers": "^3.3.2",
     "date-fns": "^2.30.0",
-    "react-query": "^3.39.3"
+    "react-query": "^3.39.3",
+    "undici": "^5.28.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

@@ -7,10 +7,15 @@
   ],
   "functions": {
     "app/api/articles/bulk-generate/route.ts": {
-      "maxDuration": 300
+      "maxDuration": 300,
+      "runtime": "nodejs18.x"
     },
     "app/api/cron/daily-proposals/route.ts": {
-      "maxDuration": 300
+      "maxDuration": 300,
+      "runtime": "nodejs18.x"
+    },
+    "app/api/*/route.ts": {
+      "runtime": "nodejs18.x"
     }
   }
 }
